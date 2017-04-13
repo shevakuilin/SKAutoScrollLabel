@@ -382,8 +382,6 @@ static void each_object(NSArray *objects, void (^block)(UILabel * label)) {
         gradientMask.shouldRasterize = YES;
         gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
         
-        gradientMask.startPoint = CGPointMake(0, CGRectGetMidY(self.frame));
-        gradientMask.endPoint = CGPointMake(1, CGRectGetMidY(self.frame));
         
         // 设置渐变mask颜色和位置
         id transparent = (id)[UIColor clearColor].CGColor;
@@ -392,11 +390,6 @@ static void each_object(NSArray *objects, void (^block)(UILabel * label)) {
         
         // 计算褪色
         CGFloat fadePoint = fadeLength / CGRectGetWidth(self.bounds);
-        if (self.direction != SK_AUTOSCROLL_DIRECTION_RIGHT && self.direction != SK_AUTOSCROLL_DIRECTION_LEFT) {
-            fadePoint = fadeLength / CGRectGetHeight(self.bounds);
-        } else {
-            fadePoint = fadeLength / CGRectGetWidth(self.bounds);
-        }
         NSNumber *  leftFadePoint = @(fadePoint);
         NSNumber * rightFadePoint = @(1 - fadePoint);
         if (!fade) {
@@ -419,10 +412,20 @@ static void each_object(NSArray *objects, void (^block)(UILabel * label)) {
             }
         }
         
-        // 将计算结果交给mask
-        gradientMask.locations = @[@0, leftFadePoint, rightFadePoint, @1];
+        if (self.direction != SK_AUTOSCROLL_DIRECTION_RIGHT && self.direction != SK_AUTOSCROLL_DIRECTION_LEFT) {
+            gradientMask.startPoint = CGPointMake(CGRectGetMidX(self.frame), 0);
+            gradientMask.endPoint = CGPointMake(CGRectGetMidX(self.frame), 1);
+            
+            gradientMask.locations = @[@0, leftFadePoint, rightFadePoint, @1];
+        } else {
+            gradientMask.startPoint = CGPointMake(0, CGRectGetMidY(self.frame));
+            gradientMask.endPoint = CGPointMake(1, CGRectGetMidY(self.frame));
+            
+            // 将计算结果交给mask
+            gradientMask.locations = @[@0, leftFadePoint, rightFadePoint, @1];
+        }
         
-                [CATransaction begin];
+        [CATransaction begin];
         [CATransaction setDisableActions:YES];
         self.layer.mask = gradientMask;
         [CATransaction commit];
