@@ -110,14 +110,16 @@ static void each_object(NSArray *objects, void (^block)(UILabel * label)) {
 }
 
 - (void)setText:(NSString *)theText refreshLabels:(BOOL)refresh {
-    // ignore identical text changes
-    if ([theText isEqualToString:self.text])
+    // 忽略相同文本的变化
+    if ([theText isEqualToString:self.text]) {
         return;
+    }
     
     EACH_LABEL(text, theText)
     
-    if (refresh)
+    if (refresh) {
         [self refreshUI];
+    }
 }
 
 - (NSString *)text {
@@ -129,14 +131,15 @@ static void each_object(NSArray *objects, void (^block)(UILabel * label)) {
 }
 
 - (void)setAttributedText:(NSAttributedString *)theText refreshLabels:(BOOL)refresh {
-    // ignore identical text changes
-    if ([theText.string isEqualToString:self.attributedText.string])
+    if ([theText.string isEqualToString:self.attributedText.string]) {
         return;
+    }
     
     EACH_LABEL(attributedText, theText)
     
-    if (refresh)
+    if (refresh) {
         [self refreshUI];
+    }
 }
 
 - (NSAttributedString *)attributedText {
@@ -152,8 +155,9 @@ static void each_object(NSArray *objects, void (^block)(UILabel * label)) {
 }
 
 - (void)setFont:(UIFont *)font {
-    if (self.scrollLabel.font == font)
+    if (self.scrollLabel.font == font) {
         return;
+    }
     
     EACH_LABEL(font, font)
     
@@ -296,19 +300,6 @@ static void each_object(NSArray *objects, void (^block)(UILabel * label)) {
 #pragma mark - 刷新UI
 - (void)refreshUI
 {
-//    if (self.direction != SK_AUTOSCROLL_DIRECTION_RIGHT && self.direction != SK_AUTOSCROLL_DIRECTION_LEFT) {
-//        
-//        // 动态获取长度和高度
-//        NSDictionary * attribute = [NSDictionary dictionaryWithObjectsAndKeys:self.font,NSFontAttributeName, nil];
-//        CGSize sizeWord = [@"一" boundingRectWithSize:self.bounds.size options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
-//        CGFloat wordWidth = sizeWord.width;
-//        CGSize sizeStr = [self.text boundingRectWithSize:CGSizeMake(wordWidth, CGFLOAT_MAX) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
-//        CGFloat wordHeight = sizeStr.height;
-//        self.scrollLabel.frame = CGRectMake((CGRectGetWidth(self.frame) / 2) - (wordWidth / 2), 10, wordWidth, wordHeight);
-//        self.scrollLabel.numberOfLines = 0;
-//        
-//    }
-
     __block float offset = 0;
     
     each_object(self.labels, ^(UILabel *label) {
@@ -339,7 +330,6 @@ static void each_object(NSArray *objects, void (^block)(UILabel * label)) {
         }
         
     });
-    
     
     [self.scrollView.layer removeAllAnimations];
     
@@ -381,9 +371,16 @@ static void each_object(NSArray *objects, void (^block)(UILabel * label)) {
 #pragma mark - 梯度褪色
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength enableFade:(BOOL)fade {
     CGFloat labelWidth = CGRectGetWidth(self.scrollLabel.bounds);
-    
-    if (labelWidth <= CGRectGetWidth(self.bounds))
-        fadeLength = 0;
+    CGFloat labelHeight = CGRectGetHeight(self.scrollLabel.bounds);
+    if (self.direction != SK_AUTOSCROLL_DIRECTION_RIGHT && self.direction != SK_AUTOSCROLL_DIRECTION_LEFT) {
+        if (labelHeight <= CGRectGetWidth(self.bounds)) {
+            fadeLength = 0;
+        }
+    } else {
+        if (labelWidth <= CGRectGetWidth(self.bounds)) {
+            fadeLength = 0;
+        }
+    }
     
     if (fadeLength) {
         // 重新创建梯度mask和消失长度
@@ -395,8 +392,17 @@ static void each_object(NSArray *objects, void (^block)(UILabel * label)) {
         gradientMask.shouldRasterize = YES;
         gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
         
-        gradientMask.startPoint = CGPointMake(0, CGRectGetMidY(self.frame));
-        gradientMask.endPoint = CGPointMake(1, CGRectGetMidY(self.frame));
+        CGFloat fadePoint = 0;
+        
+        if (self.direction != SK_AUTOSCROLL_DIRECTION_RIGHT && self.direction != SK_AUTOSCROLL_DIRECTION_LEFT) {
+            gradientMask.startPoint = CGPointMake(CGRectGetMidX(self.frame), 0);
+            gradientMask.endPoint = CGPointMake(CGRectGetMidX(self.frame), 1);
+            fadePoint = fadeLength / CGRectGetHeight(self.bounds);
+        } else {
+            gradientMask.startPoint = CGPointMake(0, CGRectGetMidY(self.frame));
+            gradientMask.endPoint = CGPointMake(1, CGRectGetMidY(self.frame));
+            fadePoint = fadeLength / CGRectGetWidth(self.bounds);
+        }
         
         // 设置渐变mask颜色和位置
         id transparent = (id)[UIColor clearColor].CGColor;
@@ -404,8 +410,7 @@ static void each_object(NSArray *objects, void (^block)(UILabel * label)) {
         gradientMask.colors = @[transparent, opaque, opaque, transparent];
         
         // 计算褪色
-        CGFloat fadePoint = fadeLength / CGRectGetWidth(self.bounds);
-        NSNumber *  leftFadePoint = @(fadePoint);
+        NSNumber * leftFadePoint = @(fadePoint);
         NSNumber * rightFadePoint = @(1 - fadePoint);
         if (!fade) {
             switch (self.direction) {
@@ -430,7 +435,7 @@ static void each_object(NSArray *objects, void (^block)(UILabel * label)) {
         // 将计算结果交给mask
         gradientMask.locations = @[@0, leftFadePoint, rightFadePoint, @1];
         
-                [CATransaction begin];
+        [CATransaction begin];
         [CATransaction setDisableActions:YES];
         self.layer.mask = gradientMask;
         [CATransaction commit];

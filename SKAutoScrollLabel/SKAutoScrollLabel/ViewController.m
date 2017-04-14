@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    NSString * text = @"罗纳尔多，舍甫琴科，亨利，劳尔，克雷斯波，因扎吉，范尼斯特鲁伊，马凯，阿德里亚诺";
     // 向左滚动
     SKAutoScrollLabel * leftLabel = [[SKAutoScrollLabel alloc] initWithFrame:CGRectMake(50, 50, [UIScreen mainScreen].bounds.size.width - 100, 50)];
     [self.view addSubview:leftLabel];
@@ -25,7 +25,7 @@
     leftLabel.textColor = [UIColor whiteColor];
     leftLabel.font = [UIFont systemFontOfSize:16];
     leftLabel.direction = SK_AUTOSCROLL_DIRECTION_LEFT;
-    leftLabel.text = @"这是一个向左自动滚动的UILabel---SKAutoScrollLabel，作者ShevaKuilin";
+    leftLabel.text = text;
     
     // 向右滚动
     SKAutoScrollLabel * rightLabel = [[SKAutoScrollLabel alloc] initWithFrame:CGRectMake(50, 110, [UIScreen mainScreen].bounds.size.width - 100, 50)];
@@ -34,7 +34,7 @@
     rightLabel.textColor = [UIColor whiteColor];
     rightLabel.font = [UIFont systemFontOfSize:16];
     rightLabel.direction = SK_AUTOSCROLL_DIRECTION_RIGHT;
-    rightLabel.text = @"这是一个向右自动滚动的UILabel---SKAutoScrollLabel，作者ShevaKuilin";
+    rightLabel.text = text;
     
     // 向上滚动
     SKAutoScrollLabel * topLabel = [[SKAutoScrollLabel alloc] initWithFrame:CGRectMake(50, 170,  50, 200)];
@@ -43,7 +43,7 @@
     topLabel.textColor = [UIColor whiteColor];
     topLabel.font = [UIFont systemFontOfSize:16];
     topLabel.direction = SK_AUTOSCROLL_DIRECTION_TOP;
-    topLabel.text = @"这是一个向上自动滚动的UILabel---SKAutoScrollLabel，作者ShevaKuilin";
+    topLabel.text = text;
 
     // 向下滚动
     SKAutoScrollLabel * bottomLabel = [[SKAutoScrollLabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 100, 170, 50, 200)];
@@ -52,7 +52,7 @@
     bottomLabel.textColor = [UIColor whiteColor];
     bottomLabel.font = [UIFont systemFontOfSize:16];
     bottomLabel.direction = SK_AUTOSCROLL_DIRECTION_BOTTOM;
-    bottomLabel.text = @"这是一个向下自动滚动的UILabel---SKAutoScrollLabel，作者ShevaKuilin";
+    bottomLabel.text = text;
 }
 
 
