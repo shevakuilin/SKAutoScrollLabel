@@ -1,3 +1,72 @@
+# SKAutoScrollLabel
+
+Automatically scrolling UILabel with both horizontal/vertical MARQUEE effects and gradient gradients on the edges.Gradient fading is used on the edge of the scroll to solve the problem of the hard edges of the rolling edge. The overall effect is a natural and easy to use.
+
+
+# Feature
+
+- Supports automatic scrolling in four directions: up, down, left, and right.
+- Freely controllable scroll pause/continue.
+- Scrolling behavior is not interrupted when applying background switching.
+- Lightweight, at least one line of initialization code is required to create.
+- Control gradient gradient effect is softer and more natural.
+- Fully annotate and instructions.
+
+# Using effect
+
+<img src="https://github.com/shevakuilin/MyGithubPicture/raw/master/Pictures/SKAutoScrollLabelExample.gif" width="370" height ="665" />
+
+# How to use
+
+Step 1: Execute `git clone git@github.com:shevakuilin/SKAutoScrollLabel.git`，then view `Example`.
+
+
+Step 2: Copy the `SKAutoScrollLabel` from the directory directly into your project, or add ```pod 'SKAutoScrollLabel'`` to the Podfile.
+
+# Installation
+
+```objectivec
+SKAutoScrollLabel *scrollLabel = [[SKAutoScrollLabel alloc] initWithTextContent:@"Fly me to the moon.Let me play among the stars.Let me see what spring is like on Jupiter and Mars.In other words, hold my hand.In other words, baby, kiss me." direction:self.scrollType];
+```
+
+# Parameter meaning
+
+- `direction` scrolling direction
+	- SK_AUTOSCROLL_DIRECTION_RIGHT 	// Scroll from left to right
+	- SK_AUTOSCROLL_DIRECTION_LEFT	// Scroll from right to left
+	- SK_AUTOSCROLL_DIRECTION_TOP		// Scroll from bottom to top
+	- SK_AUTOSCROLL_DIRECTION_BOTTOM	// Scroll from top to bottom
+
+
+- `pointsPerFrame` The distance each frame moves.The default vaule is 1.0f.
+
+- `labelSpacing` The spacing of each scrolling label.The default vaule is 20.
+
+- `textContent` Plain text content.
+
+- `attributedTextContent` Rich text content.
+
+- `textColor` Plain text color.
+
+- `font` Plain text font.
+
+- `textAlignment` Plain text alignment. 
+
+- `enableFade` Default YES. Enable gradients of lable boundaries to fade.
+
+# Control Method
+
+```objc
+- (void)pauseScroll; // Pause scrolling animation being played.
+```
+
+```objc
+- (void)continueScroll; // Make a paused scrolling animation continue playing.
+```
+
+
+------
+
 # 简述
 
 
