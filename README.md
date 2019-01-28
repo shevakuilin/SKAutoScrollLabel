@@ -26,7 +26,7 @@ Automatically scrolling UILabel with both horizontal/vertical MARQUEE effects an
 Step 1: Execute `git clone git@github.com:shevakuilin/SKAutoScrollLabel.git`，then view `Example`.
 
 
-Step 2: Copy the `SKAutoScrollLabel` from the directory directly into your project, or add ```pod 'SKAutoScrollLabel'`` to the Podfile.
+Step 2: Copy the `SKAutoScrollLabel` from the directory directly into your project, or add `pod 'SKAutoScrollLabel'` to the Podfile.
 
 # Installation
 
