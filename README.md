@@ -14,8 +14,8 @@ Automatically scrolling UILabel with both horizontal/vertical MARQUEE effects an
 - Freely controllable scroll pause/continue.
 - Scrolling behavior is not interrupted when applying background switching.
 - Lightweight, at least one line of initialization code is required to create.
-- Control gradient gradient effect is softer and more natural.
-- Fully annotate and instructions.
+- Control gradient effect is softer and more natural.
+- Fully comment and instructions.
 
 # Using effect
 
