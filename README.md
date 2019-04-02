@@ -3,7 +3,7 @@
 ![](https://img.shields.io/badge/platform-iOS-green.svg)
 ![](https://img.shields.io/badge/pod-v1.6.0.beta.1-blue.svg)
 ![](https://img.shields.io/badge/language-ObjectiveC-purple.svg)
-![](https://img.shields.io/badge/moduleVersion-v0.0.2-red.svg)
+![](https://img.shields.io/badge/moduleVersion-v0.0.3-red.svg)
 
 Automatically scrolling UILabel with both horizontal/vertical MARQUEE effects and gradient gradients on the edges.Gradient fading is used on the edge of the scroll to solve the problem of the hard edges of the rolling edge. The overall effect is a natural and easy to use.
 
@@ -28,10 +28,32 @@ Step 1: Execute `git clone git@github.com:shevakuilin/SKAutoScrollLabel.git`，t
 
 Step 2: Copy the `SKAutoScrollLabel` from the directory directly into your project, or add `pod 'SKAutoScrollLabel'` to the Podfile.
 
+Step 3: Reference header file  `#import <SKAutoScrollLabel/SKAutoScrollLabel.h>`
+
 # Installation
 
+#### Created by code
+
 ```objectivec
-SKAutoScrollLabel *scrollLabel = [[SKAutoScrollLabel alloc] initWithTextContent:@"Fly me to the moon.Let me play among the stars.Let me see what spring is like on Jupiter and Mars.In other words, hold my hand.In other words, baby, kiss me." direction:self.scrollType];
+// Scroll from right to left
+SKAutoScrollLabel *scrollLabel = [[SKAutoScrollLabel alloc] initWithTextContent:@"Fly me to the moon.Let me play among the stars.Let me see what spring is like on Jupiter and Mars.In other words, hold my hand.In other words, baby, kiss me." direction: SK_AUTOSCROLL_DIRECTION_LEFT];
+scrollLabel.backgroundColor = [UIColor orangeColor];
+scrollLabel.textColor = [UIColor whiteColor];
+// ... other settings
+```
+
+#### Created by storyboard
+
+```objectivec
+// Set the object's class to SKAutoScrollLabel in the storyboard
+@property (weak, nonatomic) IBOutlet SKAutoScrollLabel *scrollLabel;
+
+// Scroll from right to left
+self.scrollLabel.textContent = @"Fly me to the moon.Let me play among the stars.Let me see what spring is like on Jupiter and Mars.In other words, hold my hand.In other words, baby, kiss me.";
+self.scrollLabel.direction = SK_AUTOSCROLL_DIRECTION_LEFT;
+self.scrollLabel.backgroundColor = [UIColor orangeColor];
+self.scrollLabel.textColor = [UIColor whiteColor];
+// ... other settings
 ```
 
 # Parameter meaning
@@ -97,17 +119,35 @@ SKAutoScrollLabel是一个同时支持水平/垂直两种类型的“跑马灯�
 
 2.直接将目录下的 SKAutoScrollLabel 拷贝到你的工程中，或在Podfile文件中添加 ```pod 'SKAutoScrollLabel'```
 
+3.引用头文件 `#import <SKAutoScrollLabel/SKAutoScrollLabel.h>`
 
-# 使用方法
+# 初始化
 
-#### 初始化
-
+#### 通过代码创建
 
 ```objectivec
-SKAutoScrollLabel *scrollLabel = [[SKAutoScrollLabel alloc] initWithTextContent:@"你指尖跃动的电光, 是我此生不灭的信仰! 唯我超电磁炮永世长存!! 哔哩哔哩(゜-゜)つロ干杯~-bilibili" direction:self.scrollType];
+// 创建一个从右向左滚动的，背景颜色为橙色，字体颜色为白色的滚动 Label
+SKAutoScrollLabel *scrollLabel = [[SKAutoScrollLabel alloc] initWithTextContent:@"你指尖跃动的电光, 是我此生不灭的信仰! 唯我超电磁炮永世长存!! 哔哩哔哩(゜-゜)つロ干杯~-bilibili" direction: SK_AUTOSCROLL_DIRECTION_LEFT];
+scrollLabel.backgroundColor = [UIColor orangeColor];
+scrollLabel.textColor = [UIColor whiteColor];
+// ... 其他设置
 ```
 
-#### 基本参数
+#### 通过 storyboard 创建
+
+```objectivec
+// 在 storyboard 中将对象的类设置为 SKAutoScrollLabel
+@property (weak, nonatomic) IBOutlet SKAutoScrollLabel *scrollLabel;
+
+// 创建一个从右向左滚动的，背景颜色为橙色，字体颜色为白色的滚动 Label
+self.scrollLabel.textContent = @"你指尖跃动的电光, 是我此生不灭的信仰! 唯我超电磁炮永世长存!! 哔哩哔哩(゜-゜)つロ干杯~-bilibili";
+self.scrollLabel.direction = SK_AUTOSCROLL_DIRECTION_LEFT;
+self.scrollLabel.backgroundColor = [UIColor orangeColor];
+self.scrollLabel.textColor = [UIColor whiteColor];
+// ... 其他设置
+```
+
+# 基本参数
 
 - `direction` 滚动方向
 	- SK_AUTOSCROLL_DIRECTION_RIGHT 	// 从左向右滚动, 默认选项
@@ -132,7 +172,7 @@ SKAutoScrollLabel *scrollLabel = [[SKAutoScrollLabel alloc] initWithTextContent:
 
 - `enableFade` 开关梯度渐变，默认开启
 
-#### 控制方法
+# 控制方法
 
 ```objc
 - (void)pauseScroll; // 暂停滚动

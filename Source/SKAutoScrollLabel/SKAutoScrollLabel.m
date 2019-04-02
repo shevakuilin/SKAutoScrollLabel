@@ -207,7 +207,7 @@ static const CGFloat kDefaultFadeLength = 7.f;
 
 - (void)creatDisplayLink {
     self.displayLinke = [CADisplayLink displayLinkWithTarget:self selector:@selector(processDisplayLink)];
-    [self.displayLinke addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [self.displayLinke addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 }
 
 - (void)processDisplayLink {
