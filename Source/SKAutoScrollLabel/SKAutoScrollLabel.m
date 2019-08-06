@@ -147,9 +147,9 @@ static const CGFloat kDefaultFadeLength = 7.f;
     }
 }
 
-- (void)willMoveToWindow:(UIWindow *)newWindow {
-    [super willMoveToWindow:newWindow];
-    if (!newWindow) {
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    [super willMoveToSuperview:newSuperview];
+    if (!newSuperview) {
         [self stopDisplayLinke];
     }
 }
