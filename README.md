@@ -3,7 +3,7 @@
 ![](https://img.shields.io/badge/platform-iOS-green.svg)
 ![](https://img.shields.io/badge/pod-v1.6.0.beta.1-blue.svg)
 ![](https://img.shields.io/badge/language-ObjectiveC-purple.svg)
-![](https://img.shields.io/badge/version-v0.0.4-red.svg)
+![](https://img.shields.io/badge/version-v0.0.5-red.svg)
 
 Automatically scrolling UILabel with both horizontal/vertical MARQUEE effects and gradient gradients on the edges.Gradient fading is used on the edge of the scroll to solve the problem of the hard edges of the rolling edge. The overall effect is a natural and easy to use.
 

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "SKAutoScrollLabel"
-  s.version      = "0.0.4"
+  s.version      = "0.0.5"
   s.summary      = "水平/垂直跑马灯"
   s.description  = <<-DESC
   Automatically scrolling UILabel with both horizontal/vertical MARQUEE effects and gradient gradients on the edges
