@@ -84,15 +84,7 @@ static const CGFloat kDefaultFadeLength = 7.f;
     [self addSubview:self.containerView];
     
     self.animationLabel = [[UILabel alloc] init];
-    self.animationLabel.text = self.textContent;
-    self.animationLabel.textColor = self.textColor;
-    self.animationLabel.font = self.font;
-    self.animationLabel.numberOfLines = 0;
-    self.animationLabel.textAlignment = self.textAlignment;
-    if (self.attributedTextContent) {
-        self.animationLabel.attributedText = self.attributedTextContent;
-    }
-    [self.animationLabel sizeToFit];
+    [self updateAnimationLabel];
     [self.containerView addSubview:self.animationLabel];
     
     self.animationLabel.frame = [self fixLabelFrameWithDirection:self.direction];
@@ -132,6 +124,18 @@ static const CGFloat kDefaultFadeLength = 7.f;
         default:
             break;
     }
+}
+
+- (void)updateAnimationLabel {
+    self.animationLabel.text = self.textContent;
+    self.animationLabel.textColor = self.textColor;
+    self.animationLabel.font = self.font;
+    self.animationLabel.numberOfLines = 0;
+    self.animationLabel.textAlignment = self.textAlignment;
+    if (self.attributedTextContent) {
+        self.animationLabel.attributedText = self.attributedTextContent;
+    }
+    [self.animationLabel sizeToFit];
 }
 
 - (void)layoutSubviews {
@@ -289,22 +293,27 @@ static const CGFloat kDefaultFadeLength = 7.f;
 
 - (void)setTextContent:(NSString *)textContent {
     _textContent = textContent;
+    [self updateAnimationLabel];
 }
 
 - (void)setAttributedTextContent:(NSAttributedString *)attributedTextContent {
     _attributedTextContent = attributedTextContent;
+    [self updateAnimationLabel];
 }
 
 - (void)setTextColor:(UIColor *)textColor {
     _textColor = textColor;
+    [self updateAnimationLabel];
 }
 
 - (void)setFont:(UIFont *)font {
     _font = font;
+    [self updateAnimationLabel];
 }
 
 - (void)setTextAlignment:(NSTextAlignment)textAlignment {
     _textAlignment = textAlignment;
+    [self updateAnimationLabel];
 }
 
 - (void)setEnableFade:(BOOL)enableFade {
