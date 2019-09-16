@@ -16,6 +16,7 @@ static const CGFloat kDefaultFadeLength = 7.f;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) UILabel *animationLabel;
 @property (nonatomic, assign) NSUInteger layoutCount;
+@property (nonatomic, assign) BOOL enableScroll;
 
 @end
 
@@ -88,10 +89,15 @@ static const CGFloat kDefaultFadeLength = 7.f;
     [self.containerView addSubview:self.animationLabel];
     
     self.animationLabel.frame = [self fixLabelFrameWithDirection:self.direction];
-    // Set frame
-    [self initContainerFrame];
-    // If the text width exceeds the width of the container, copy the same view
-    [self createRepeatLabel];
+    if (self.enableScroll) {
+        // Set frame
+        [self initContainerFrame];
+        // If the text width exceeds the width of the container, copy the same view
+        [self createRepeatLabel];
+    } else {
+        self.animationLabel.frame = CGRectMake(self.bounds.size.width / 2 - self.animationLabel.frame.size.width / 2, self.bounds.size.height / 2 - self.animationLabel.frame.size.height / 2, self.animationLabel.frame.size.width, self.animationLabel.frame.size.height);
+        [self applyGradientMask];
+    }
 }
 
 - (void)initContainerFrame {
@@ -157,26 +163,24 @@ static const CGFloat kDefaultFadeLength = 7.f;
 #pragma mark - Create repeatLabel
 
 - (void)createRepeatLabel {
-    if (self.animationLabel.bounds.size.width > self.bounds.size.width || self.animationLabel.bounds.size.height > self.bounds.size.height) {
-        NSData *repeatLabelData = [NSKeyedArchiver archivedDataWithRootObject:self.animationLabel];// copy the animationLabel's data
-        UILabel *repeatLabel = [NSKeyedUnarchiver unarchiveObjectWithData:repeatLabelData];
-        
-        if (self.direction == SK_AUTOSCROLL_DIRECTION_TOP || self.direction == SK_AUTOSCROLL_DIRECTION_BOTTOM) {
-            repeatLabel.frame = CGRectMake(self.animationLabel.bounds.origin.x,
-                                           self.animationLabel.frame.origin.y + self.animationLabel.bounds.size.height + self.labelSpacing,
-                                           self.animationLabel.bounds.size.width,
-                                           self.animationLabel.bounds.size.height);
-            repeatLabel.center = CGPointMake(self.animationLabel.center.x, repeatLabel.center.y);
-        } else {
-            repeatLabel.frame = CGRectMake(self.animationLabel.frame.origin.x + self.animationLabel.bounds.size.width + self.labelSpacing,
-                                           self.animationLabel.bounds.origin.y,
-                                           self.animationLabel.bounds.size.width,
-                                           self.animationLabel.bounds.size.height);
-            repeatLabel.center = CGPointMake(repeatLabel.center.x, self.animationLabel.center.y);
-        }
-        
-        [self.containerView addSubview:repeatLabel];
+    NSData *repeatLabelData = [NSKeyedArchiver archivedDataWithRootObject:self.animationLabel];// copy the animationLabel's data
+    UILabel *repeatLabel = [NSKeyedUnarchiver unarchiveObjectWithData:repeatLabelData];
+    
+    if (self.direction == SK_AUTOSCROLL_DIRECTION_TOP || self.direction == SK_AUTOSCROLL_DIRECTION_BOTTOM) {
+        repeatLabel.frame = CGRectMake(self.animationLabel.bounds.origin.x,
+                                       self.animationLabel.frame.origin.y + self.animationLabel.bounds.size.height + self.labelSpacing,
+                                       self.animationLabel.bounds.size.width,
+                                       self.animationLabel.bounds.size.height);
+        repeatLabel.center = CGPointMake(self.animationLabel.center.x, repeatLabel.center.y);
+    } else {
+        repeatLabel.frame = CGRectMake(self.animationLabel.frame.origin.x + self.animationLabel.bounds.size.width + self.labelSpacing,
+                                       self.animationLabel.bounds.origin.y,
+                                       self.animationLabel.bounds.size.width,
+                                       self.animationLabel.bounds.size.height);
+        repeatLabel.center = CGPointMake(repeatLabel.center.x, self.animationLabel.center.y);
     }
+    
+    [self.containerView addSubview:repeatLabel];
 }
 
 #pragma mark - Fix the frame of the label based on the scroll direction
@@ -210,8 +214,10 @@ static const CGFloat kDefaultFadeLength = 7.f;
 #pragma mark - DisplayLink control
 
 - (void)creatDisplayLink {
-    self.displayLinke = [CADisplayLink displayLinkWithTarget:self selector:@selector(processDisplayLink)];
-    [self.displayLinke addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    if (self.enableScroll) {
+        self.displayLinke = [CADisplayLink displayLinkWithTarget:self selector:@selector(processDisplayLink)];
+        [self.displayLinke addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    }
 }
 
 - (void)processDisplayLink {
@@ -318,6 +324,20 @@ static const CGFloat kDefaultFadeLength = 7.f;
 
 - (void)setEnableFade:(BOOL)enableFade {
     _enableFade = enableFade;
+}
+
+#pragma mark - Getter
+
+- (BOOL)enableScroll {
+    BOOL morethanWidth = self.animationLabel.bounds.size.width > self.bounds.size.width ? YES:NO;
+    morethanWidth = self.direction == SK_AUTOSCROLL_DIRECTION_RIGHT || self.direction == SK_AUTOSCROLL_DIRECTION_LEFT ? morethanWidth:NO;
+    BOOL morethanHeight = self.animationLabel.bounds.size.height > self.bounds.size.height ? YES:NO;
+    morethanHeight = self.direction == SK_AUTOSCROLL_DIRECTION_TOP || self.direction == SK_AUTOSCROLL_DIRECTION_BOTTOM ? morethanHeight:NO;
+    
+    if (morethanWidth | morethanHeight) {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - Scrolling animation control
